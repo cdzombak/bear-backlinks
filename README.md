@@ -4,7 +4,8 @@ Automated backlinks for the excellent Bear app, in case you'd like those for a Z
 
 ## TODO
 
-- fork xcall.py & update for python 3
 - figure out packaging/install for this script
+- figure out scheduling for the script (launchd)
 - figure out security/accessibility prefs to run this script reliably
+- fork xcall.py & update public version for python 3
 - fork xcall & build fat binaries
