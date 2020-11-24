@@ -1,4 +1,6 @@
 .bear-api-token
+backups/*
+!backups/.gitkeep
 
 ### Python
 # Byte-compiled / optimized / DLL files
