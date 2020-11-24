@@ -4,6 +4,29 @@ from config import get_bear_api_token
 from xcall import xcall
 
 
+def _wiki_link_escaped(value: str) -> str:
+    return value.replace('/', '\\/')
+
+
+def _backlink_search_terms(note):
+    search_title = note.title
+    if '"' in search_title or '“' in search_title or '”' in search_title:
+        search_title = search_title.replace('“', '"')
+        search_title = search_title.replace('”', '"')
+        parts = search_title.split('"')
+        search_title = ""
+        for p in parts:
+            p = p.strip()
+            if len(p) == 0:
+                continue
+            search_title = search_title + '"' + p + '"' + ' '
+        search_title = search_title.strip()
+    else:
+        search_title = '"[[' + search_title + '"'
+    search_id = '"'+note.id+'"'
+    return [search_title, search_id]
+
+
 class Note(object):
     """
     Note is a complete note as returned by bear://x-callback-url/open-note
@@ -22,38 +45,29 @@ class Note(object):
         else:
             self.trashed = False
 
+    def __hash__(self):
+        return hash(self.id) ^ hash(self.content)
+
+    def __repr__(self):
+        return f'<bear.Note {self.id} "{self.title[:30]}">'
+
     @property
-    def title_escaped_for_link(self):
+    def title_escaped_for_wiki_link(self):
         """
         Returns: the title of this note, properly escaped to put inside [[...]]
                  for a link.
 
         Notes:
             - Bear does not escape backticks in these links (`), but links including
-              are not actually clickable, probably because the editor doesn't generally
-              handle nested Markdown.
+            are not actually clickable, probably because the editor doesn't generally
+            handle nested Markdown.
 
         """
-        return self.title.replace('/', '\\/')
+        return _wiki_link_escaped(self.title)
 
     @property
-    def backlinks_search_terms(self):
-        search_title = self.title
-        if '"' in search_title or '“' in search_title or '”' in search_title:
-            search_title = search_title.replace('“', '"')
-            search_title = search_title.replace('”', '"')
-            parts = search_title.split('"')
-            search_title = ""
-            for p in parts:
-                p = p.strip()
-                if len(p) == 0:
-                    continue
-                search_title = search_title + '"' + p + '"' + ' '
-            search_title = search_title.strip()
-        else:
-            search_title = '"' + search_title + '"'
-        search_id = '"'+self.id+'"'
-        return [search_title, search_id]
+    def backlink_search_terms(self):
+        return _backlink_search_terms(self)
 
 
 class NoteStub(object):
@@ -69,8 +83,32 @@ class NoteStub(object):
         self.title = xcall_dict['title']
         self.id = xcall_dict['identifier']
 
+    def __hash__(self):
+        return hash(self.id) ^ hash(self.title)
+
+    def __repr__(self):
+        return f'<bear.NoteStub {self.id} "{self.title[:30]}">'
+
     def to_note(self) -> Note:
         return get_note(self.id)
+
+    @property
+    def title_escaped_for_wiki_link(self):
+        """
+        Returns: the title of this note, properly escaped to put inside [[...]]
+                 for a link.
+
+        Notes:
+            - Bear does not escape backticks in these links (`), but links including
+            are not actually clickable, probably because the editor doesn't generally
+            handle nested Markdown.
+
+        """
+        return _wiki_link_escaped(self.title)
+
+    @property
+    def backlink_search_terms(self):
+        return _backlink_search_terms(self)
 
 
 class SearchResults(object):
@@ -118,3 +156,12 @@ def get_note(note_id: str) -> Note:
         'show_window': 'no',
         'open_note': 'no',
     }))
+
+
+def open_note_for_edit(note_id: str):
+    _ = xcall('bear', 'open-note', {
+        'id': note_id,
+        'show_window': 'yes',
+        'open_note': 'yes',
+        'edit': 'yes',
+    })
