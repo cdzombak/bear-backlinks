@@ -19,6 +19,7 @@ def main():
     notes_needing_backlinks = {n for n in notes_needing_backlinks if not n.trashed}
     logger.info(f'{len(notes_needing_backlinks)} notes need backlink updates')
 
+    # build a map of note -> stubs which link to this note
     backlinks = {}
     for note in notes_needing_backlinks:
         searches = note.backlink_search_terms
@@ -28,6 +29,7 @@ def main():
         backlinks[note] = stubs
         logger.debug(f'Note {note.id} has {len(stubs)} backlinks')
 
+    # build a map of note -> new content for that note, iff the content needs to change (ie. backlinks have changed)
     new_note_content = {}
     for note, backlink_stubs in backlinks.items():
         if len(backlink_stubs) == 0:
@@ -56,6 +58,7 @@ def main():
             continue
         new_note_content[note] = pre_backlinks + backlinks_md + post_backlinks
 
+    # backup the notes we're about to update:
     backup_dir = os.path.join(get_backups_path(), datetime.datetime.now().strftime('%Y-%m-%dT%H-%M-%S%z'))
     os.mkdir(backup_dir)
     logger.info(f'backing up {len(new_note_content)} notes to {backup_dir}')
@@ -64,6 +67,7 @@ def main():
         with open(fname, 'w') as f:
             f.write(note.content)
 
+    # update each note that needs updating, in Bear:
     for note, new_content in new_note_content.items():
         bear.open_note_for_edit(note.id)
         logger.debug(f'updating content for note {note.id}')
