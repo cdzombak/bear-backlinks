@@ -12,7 +12,7 @@ def get_bear_api_token() -> str:
             retv = f.read().strip()
     except Exception as e:  #noqa
         logger = logging.getLogger('config')
-        logger.critical('could not get Bear API token from environment (CDZ_BEAR_API_TOKEN) or file (.bear_api_token)', exc_info=e)
+        logger.critical('could not get Bear API token from environment (CDZ_BEAR_API_TOKEN) or file (.bear-api-token)', exc_info=e)
         sys.exit(2)
     return retv
 
