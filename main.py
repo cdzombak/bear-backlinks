@@ -25,8 +25,8 @@ def main():
     time.sleep(1)  # allow xcall.app time to exit normally
 
     notes_needing_backlinks = {stub.to_note() for stub in bear.search_term('"## Backlinks"')}
-    notes_needing_backlinks = {n for n in notes_needing_backlinks if not n.trashed}
-    logger.info(f'{len(notes_needing_backlinks)} notes need backlink updates')
+    notes_needing_backlinks = {n for n in notes_needing_backlinks if ('---\n' in n.content and not n.trashed)}
+    logger.info(f'{len(notes_needing_backlinks)} notes have Backlinks sections')
 
     # build a map of note -> stubs which link to this note
     backlinks = {}
