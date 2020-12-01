@@ -6,7 +6,7 @@ Automated backlinks for the excellent Bear app, in case you'd like those for a Z
 
 - [x] Document installation & usage for this script
 - [ ] Figure out scheduling for the script (launchd job)
-- [ ] Figure out security/accessibility preferences required to run this script reliably, particularly with a background launchd job. (When running from iTerm, add iTerm to the list of apps allowed to use Accessibility.)
+- [ ] Figure out security/accessibility preferences required to run this script reliably, particularly from a background launchd job. (When running from iTerm, add iTerm to the list of apps allowed to use Accessibility.)
 - [ ] Fork [python-xcall](https://github.com/robwalton/python-xcall) & update it with my Python 3 version (see [xcall.py](https://github.com/cdzombak/bear-backlinks/blob/master/xcall.py))
 - [ ] Fork [xcall](https://github.com/martinfinke/xcall) & build fat binaries, to ensure future Apple Silicon compatibility
 
@@ -50,6 +50,12 @@ Install it with eg. `brew install python`. See [Homebrew's docs on Python](https
 ## Installation
 
 Simply `git clone https://github.com/cdzombak/bear-backlinks.git`. You can run the program from the checked-out repo.
+
+## Config
+
+One configuration element is required, the Bear API token for Bear.app on the Mac you're running this program on. Get it from Bear's Help menu > API Token > Copy Token.
+
+Supply it either in the env variable `CDZ_BEAR_API_TOKEN` or in a file `.bear-api-token` in the same directory as `main.py`.
 
 ## Usage
 
