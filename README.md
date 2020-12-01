@@ -68,6 +68,10 @@ To customize the backup directory, supply the environment variable `CDZ_BEAR_BAC
 1. Ensure Bear is running and is not in any weird state (eg. it is not currently displaying a modal window).
 1. Run `./main.py`.
 
+## Troubleshooting
+
+**Verbose logging:** enable by setting env var `CDZ_BEAR_VERBOSE` to `True`.
+
 ## About
 
 - Issues: https://github.com/cdzombak/bear-backlinks/issues/new

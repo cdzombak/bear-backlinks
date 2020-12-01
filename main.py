@@ -5,15 +5,19 @@ import bear
 import datetime
 import logging
 import os
+import xcall
 
-from config import get_backups_path
+from config import be_verbose, get_backups_path
 from mac import copy_to_clipboard
 
 
 def main():
     logger = logging.getLogger('main')
-    # logger.setLevel(logging.DEBUG)
-    logger.setLevel(logging.INFO)
+    if be_verbose():
+        logger.setLevel(logging.DEBUG)
+        xcall.enable_verbose_logging()
+    else:
+        logger.setLevel(logging.INFO)
 
     notes_needing_backlinks = {stub.to_note() for stub in bear.search_term('"## Backlinks"')}
     notes_needing_backlinks = {n for n in notes_needing_backlinks if not n.trashed}

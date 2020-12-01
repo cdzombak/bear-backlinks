@@ -22,3 +22,12 @@ def get_backups_path() -> str:
     if retv is not None:
         return retv
     return './backups'
+
+
+def be_verbose() -> bool:
+    val = os.getenv('CDZ_BEAR_VERBOSE')
+    if val is None:
+        return False
+    if val.lower() in {'true', '1', 'yes'}:
+        return True
+    return False
