@@ -5,8 +5,8 @@ Automated backlinks for the excellent Bear app, in case you'd like those for a Z
 ## TODO
 
 - [x] Document installation & usage for this script
-- [ ] Figure out scheduling for the script (launchd job)
-- [ ] Figure out security/accessibility preferences required to run this script reliably, particularly from a background launchd job. (When running from iTerm, add iTerm to the list of apps allowed to use Accessibility.)
+- [x] Figure out scheduling for the script (launchd job)
+- [x] Figure out security/accessibility preferences required to run this script reliably, particularly from a background launchd job. (When running from iTerm, add iTerm to the list of apps allowed to use Accessibility.)
 - [ ] Fork [python-xcall](https://github.com/robwalton/python-xcall) & update it with my Python 3 version (see [xcall.py](https://github.com/cdzombak/bear-backlinks/blob/master/xcall.py))
 - [ ] Fork [xcall](https://github.com/martinfinke/xcall) & build fat binaries, to ensure future Apple Silicon compatibility
 
@@ -55,6 +55,26 @@ Install it with eg. `brew install python`. See [Homebrew's docs on Python](https
 
 Simply `git clone https://github.com/cdzombak/bear-backlinks.git`. You can run the program from the checked-out repo.
 
+### launchd job
+
+Customize the included launchd plist file, adjusting:
+- path to the `main.py` script
+- working directory path
+- your Bear app API token
+
+Then:
+```
+cp com.dzombak.bear-backlinks.plist ~/Library/LaunchAgents
+launchctl load -w com.dzombak.bear-backlinks
+```
+
+To start the job (ie. run the program), which you'll need to do at least once to allow automation permissions:
+```
+launchctl start com.dzombak.bear-backlinks
+```
+
+Editing & debugging this job is all easier with the excellent [LaunchControl application](https://www.soma-zone.com/LaunchControl/).
+
 ## Config
 
 One configuration element is required, the Bear API token for Bear.app on the Mac you're running this program on. Get it from Bear's Help menu > API Token > Copy Token.
@@ -71,6 +91,20 @@ To customize the backup directory, supply the environment variable `CDZ_BEAR_BAC
 ## Troubleshooting
 
 **Verbose logging:** enable by setting env var `CDZ_BEAR_VERBOSE` to `True`.
+
+**If xcall hangs** returning x-callback-url values, it may be because you've (re)moved an instance of the xcall application somewhere on your filesystem. Fix this by opening the instance in this repo's `lib` folder, via Finder.
+
+**Automation permission (as of macOS Mojave):** on first run, you'll see something like this in the output:
+
+```
+2020-12-01 08:40:37,901 DEBUG:updating content for note DEADBEEF-64
+80:112: execution error: System Events got an error: osascript is not allowed to send keystrokes. (1002)
+2020-12-01 08:40:40,496 INFO:completed successfully; updated 2 notes.
+``` 
+
+This should show up alongside a GUI dialog asking if you want to allow "main.py" to control System Events (or, if you're running from a terminal, it'll ask if your terminal app should be allowed to do so). Approve this request & re-run the program.
+
+**launchd job returns 127:** `main.py` cannot be run. This probably is because `#!/usr/bin/env python3` is not finding a Python 3 binary. Adjust PATH for the launchd job to include `python3`. 
 
 ## About
 

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>EnvironmentVariables</key>
+	<dict>
+		<key>CDZ_BEAR_API_TOKEN</key>
+		<string>YOUR-TOKEN-HERE</string>
+		<key>CDZ_BEAR_VERBOSE</key>
+		<string>False</string>
+		<key>PATH</key>
+		<string>/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin</string>
+	</dict>
+	<key>Label</key>
+	<string>com.dzombak.bear-backlinks</string>
+	<key>LimitLoadToSessionType</key>
+	<string>Aqua</string>
+	<key>Program</key>
+	<string>/Users/cdzombak/code/bear-backlinks/main.py</string>
+	<key>StartCalendarInterval</key>
+	<array>
+		<dict>
+			<key>Hour</key>
+			<integer>3</integer>
+			<key>Minute</key>
+			<integer>0</integer>
+		</dict>
+	</array>
+	<key>WorkingDirectory</key>
+	<string>/Users/cdzombak/code/bear-backlinks</string>
+</dict>
+</plist>
