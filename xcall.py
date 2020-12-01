@@ -188,7 +188,7 @@ class XCallClient(object):
 
 def get_pid_of_running_xcall_processes():
     try:
-        reply = subprocess.check_output(['pgrep', 'xcall'])
+        reply = str(subprocess.check_output(['pgrep', 'xcall']))
     except subprocess.CalledProcessError:
         return []
     pid_list = reply.strip().split('\n')
