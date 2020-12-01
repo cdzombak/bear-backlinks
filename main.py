@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-import time
 
 import bear
 import datetime
 import logging
 import os
+import time
+import sys
 import xcall
 
 from config import be_verbose, get_backups_path
@@ -65,6 +66,10 @@ def main():
             logger.debug(f'note {note} does not have updated backlinks; skipping it')
             continue
         new_note_content[note] = pre_backlinks + backlinks_md + post_backlinks
+
+    if len(new_note_content) == 0:
+        logger.info("no notes need updating; all done!")
+        sys.exit(0)
 
     # backup the notes we're about to update:
     backup_dir = os.path.join(get_backups_path(), datetime.datetime.now().strftime('%Y-%m-%dT%H-%M-%S%z'))
