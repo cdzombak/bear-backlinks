@@ -19,6 +19,10 @@ def main():
     else:
         logger.setLevel(logging.INFO)
 
+    # open the xcall app once to ensure callback url scheme is registered w/macOS:
+    os.popen(f'open -a "{xcall.XCALL_PATH}"').read()
+    time.sleep(1)  # allow xcall.app time to exit normally
+
     notes_needing_backlinks = {stub.to_note() for stub in bear.search_term('"## Backlinks"')}
     notes_needing_backlinks = {n for n in notes_needing_backlinks if not n.trashed}
     logger.info(f'{len(notes_needing_backlinks)} notes need backlink updates')
