@@ -35,6 +35,8 @@ When this script runs, it looks for notes which contain the string `## Backlinks
 
 This is useful for certain note-taking practices such as [Evergreen Notes](https://notes.andymatuschak.org/Evergreen_notes) and [Zettelkasten](https://zettelkasten.de), though there is [debate](https://zettelkasten.de/posts/backlinks-are-bad-links/) about its effectiveness.
 
+A backup of each modified note is written to a timestamped backups directory as a Markdown file.
+
 ## Requirements / Compatibility
 
 **Tested on macOS Mojave, on various Intel Macs.**
@@ -47,6 +49,8 @@ I imagine this could run under Rosetta 2 on Apple Silicon, but this is untested.
 
 Install it with eg. `brew install python`. See [Homebrew's docs on Python](https://docs.brew.sh/Homebrew-and-Python) for background information.
 
+**Also, `brew install terminal-notifier` is required.**
+
 ## Installation
 
 Simply `git clone https://github.com/cdzombak/bear-backlinks.git`. You can run the program from the checked-out repo.
@@ -56,6 +60,8 @@ Simply `git clone https://github.com/cdzombak/bear-backlinks.git`. You can run t
 One configuration element is required, the Bear API token for Bear.app on the Mac you're running this program on. Get it from Bear's Help menu > API Token > Copy Token.
 
 Supply it either in the env variable `CDZ_BEAR_API_TOKEN` or in a file `.bear-api-token` in the same directory as `main.py`.
+
+To customize the backup directory, supply the environment variable `CDZ_BEAR_BACKUPS_DIR`.
 
 ## Usage
 
