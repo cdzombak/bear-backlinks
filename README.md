@@ -1,6 +1,6 @@
 # bear-backlinks
 
-Automated backlinks for the excellent Bear app, in case you'd like those for a Zettelkasten-style notes library.
+Automated backlinks for [the Bear app](https://bear.app), in case you'd like those for a Zettelkasten-style notes library.
 
 ## TODO
 
@@ -12,7 +12,7 @@ Automated backlinks for the excellent Bear app, in case you'd like those for a Z
 
 ## What it Does
 
-In a Bear note, write the following to opt into automatic backlinking:
+In a Bear note, you will write the following to opt into automatic backlinking:
 
 ```
 ## Backlinks
@@ -43,7 +43,7 @@ A backup of each modified note is written to a timestamped backups directory as 
 
 Should work on newer versions of macOS, except that changes to automation/privacy/Apple Events/security policies in newer macOS versions might make the automated interaction with Bear flakier, or make authorizing this program to use Accessibility more complex. (As it is, running this script via eg. iTerm requires iTerm to be allowed to use Accessibility automation).
 
-I imagine this could run under Rosetta 2 on Apple Silicon, but this is untested. The main potential issue is that the checked-in copy of xcall is AFAIK not built for ARM.
+I imagine this should run under Rosetta 2 on Apple Silicon, but this is untested. The main potential issue is that the checked-in copy of xcall is AFAIK not built for ARM.
 
 **A working Python 3.x installation is required.**
 
