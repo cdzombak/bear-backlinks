@@ -16,7 +16,7 @@
 	<key>LimitLoadToSessionType</key>
 	<string>Aqua</string>
 	<key>Program</key>
-	<string>/Users/cdzombak/code/bear-backlinks/main.py</string>
+	<string>/Users/cdzombak/code/bear-backlinks/bear_backlinks.py</string>
 	<key>StartCalendarInterval</key>
 	<array>
 		<dict>

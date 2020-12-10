@@ -58,7 +58,7 @@ Simply `git clone https://github.com/cdzombak/bear-backlinks.git`. You can run t
 ### launchd job
 
 Customize the included launchd plist file, adjusting:
-- path to the `main.py` script
+- path to the `bear_backlinks.py` script
 - working directory path
 - your Bear app API token
 
@@ -79,14 +79,14 @@ Editing & debugging this job is all easier with the excellent [LaunchControl app
 
 One configuration element is required, the Bear API token for Bear.app on the Mac you're running this program on. Get it from Bear's Help menu > API Token > Copy Token.
 
-Supply it either in the env variable `CDZ_BEAR_API_TOKEN` or in a file `.bear-api-token` in the same directory as `main.py`.
+Supply it either in the env variable `CDZ_BEAR_API_TOKEN` or in a file `.bear-api-token` in the same directory as `bear_backlinks.py`.
 
 To customize the backup directory, supply the environment variable `CDZ_BEAR_BACKUPS_DIR`.
 
 ## Usage
 
 1. Ensure Bear is running and is not in any weird state (eg. it is not currently displaying a modal window).
-1. Run `./main.py`.
+1. Run `./bear_backlinks.py`.
 
 ## Troubleshooting
 
@@ -102,9 +102,9 @@ To customize the backup directory, supply the environment variable `CDZ_BEAR_BAC
 2020-12-01 08:40:40,496 INFO:completed successfully; updated 2 notes.
 ``` 
 
-This should show up alongside a GUI dialog asking if you want to allow "main.py" to control System Events (or, if you're running from a terminal, it'll ask if your terminal app should be allowed to do so). Approve this request & re-run the program.
+This should show up alongside a GUI dialog asking if you want to allow "bear_backlinks.py" to control System Events (or, if you're running from a terminal, it'll ask if your terminal app should be allowed to do so). Approve this request & re-run the program.
 
-**launchd job returns 127:** `main.py` cannot be run. This probably is because `#!/usr/bin/env python3` is not finding a Python 3 binary. Adjust PATH for the launchd job to include `python3`. 
+**launchd job returns 127:** `bear_backlinks.py` cannot be run. This probably is because `#!/usr/bin/env python3` is not finding a Python 3 binary. Adjust PATH for the launchd job to include `python3`. 
 
 ## About
 
