@@ -75,6 +75,10 @@ launchctl start com.dzombak.bear-backlinks
 
 Editing & debugging this job is all easier with the excellent [LaunchControl application](https://www.soma-zone.com/LaunchControl/).
 
+### Accessibility permissions
+
+Drag the `bear_backlinks.py` file from Finder into the Accessibility section in the Security & Privacy preference pane.
+
 ## Config
 
 One configuration element is required, the Bear API token for Bear.app on the Mac you're running this program on. Get it from Bear's Help menu > API Token > Copy Token.
