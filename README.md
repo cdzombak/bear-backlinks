@@ -65,7 +65,7 @@ Customize the included launchd plist file, adjusting:
 Then:
 ```
 cp com.dzombak.bear-backlinks.plist ~/Library/LaunchAgents
-launchctl load -w com.dzombak.bear-backlinks
+launchctl load -w ~/Library/LaunchAgents/com.dzombak.bear-backlinks.plist
 ```
 
 To start the job (ie. run the program), which you'll need to do at least once to allow automation permissions:
