@@ -10,6 +10,7 @@ def _wiki_link_escaped(value: str) -> str:
 
 def _backlink_search_terms(note):
     search_title = note.title
+    search_title = _wiki_link_escaped(search_title)
     if '"' in search_title or '“' in search_title or '”' in search_title:
         search_title = search_title.replace('“', '"')
         search_title = search_title.replace('”', '"')
