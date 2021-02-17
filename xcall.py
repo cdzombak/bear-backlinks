@@ -177,11 +177,14 @@ class XCallClient(object):
                 'Try xcall directly from terminal with: "%s"' % ' '.join(args))
 
         if stdout:
-            response = urllib.parse.unquote(stdout.decode('utf8'))
             if self.json_decode_success:
-                return json.loads(response)
+                result = json.loads(stdout.decode('utf8'))
+                for element in result:
+                    if result[element]:
+                        result[element] = urllib.parse.unquote(result[element])
+                return result
             else:
-                return response
+                return urllib.parse.unquote(stdout.decode('utf8'))
         elif stderr:
             self.on_xerror_handler(stderr, url)
 
