@@ -2,14 +2,6 @@
 
 Automated backlinks for [the Bear app](https://bear.app), in case you'd like those for a Zettelkasten-style notes library.
 
-## TODO
-
-- [x] Document installation & usage for this script
-- [x] Figure out scheduling for the script (launchd job)
-- [x] Figure out security/accessibility preferences required to run this script reliably, particularly from a background launchd job. (When running from iTerm, add iTerm to the list of apps allowed to use Accessibility.)
-- [x] Fork [python-xcall](https://github.com/robwalton/python-xcall) & update it with my Python 3 version (see [xcall.py](https://github.com/cdzombak/bear-backlinks/blob/master/xcall.py))
-- [ ] Fork [xcall](https://github.com/martinfinke/xcall) & build fat binaries, to ensure future Apple Silicon compatibility
-
 ## What it Does
 
 In a Bear note, you will write the following to opt into automatic backlinking:
@@ -35,32 +27,38 @@ When this script runs, it looks for notes which contain the string `## Backlinks
 
 This is useful for certain note-taking practices such as [Evergreen Notes](https://notes.andymatuschak.org/Evergreen_notes) and [Zettelkasten](https://zettelkasten.de), though there is [debate](https://zettelkasten.de/posts/backlinks-are-bad-links/) about its effectiveness.
 
-A backup of each modified note is written to a timestamped backups directory as a Markdown file.
+A backup of each modified note is written as a Markdown file to a timestamped backups directory.
 
 ## Requirements / Compatibility
 
-**Tested on macOS Mojave, on various Intel Macs.**
+**Please read through the Troubleshooting section, below, thoroughly,** as getting this to work is especially challenging on Catalina/Big Sur.
 
-Should work on newer versions of macOS, except that changes to automation/privacy/Apple Events/security policies in newer macOS versions might make the automated interaction with Bear flakier, or make authorizing this program to use Accessibility more complex. (As it is, running this script via eg. iTerm requires iTerm to be allowed to use Accessibility automation).
+Tested on **macOS Mojave and Big Sur, on Intel and Apple Silicon**.
 
-I imagine this should run under Rosetta 2 on Apple Silicon, but this is untested. The main potential issue is that the checked-in copy of xcall is AFAIK not built for ARM.
+**A working Python 3.x installation is required.** Install it with eg. `brew install python`. See [Homebrew's docs on Python](https://docs.brew.sh/Homebrew-and-Python) for background information.
 
-**A working Python 3.x installation is required.**
-
-Install it with eg. `brew install python`. See [Homebrew's docs on Python](https://docs.brew.sh/Homebrew-and-Python) for background information.
-
-**Also, `brew install terminal-notifier` is required.**
+**`brew install terminal-notifier`** is required.
 
 ## Installation
 
-Simply `git clone https://github.com/cdzombak/bear-backlinks.git`. You can run the program from the checked-out repo.
+`git clone https://github.com/cdzombak/bear-backlinks.git`. You will run the program from the checked-out repo.
 
-### launchd job
+### Accessibility permissions
+
+Drag the `bear_backlinks.py` file from Finder into the Accessibility section in the Security & Privacy preference pane.
+
+### Full Disk Access permissions
+
+Under Catalina or Big Sur, the script needs to be run with Full Disk Access permission. If running the script via Terminal.app or iTerm.app, adding the terminal app to the Full Disk Access permissions list in System Preferences > Security & Privacy should be sufficient.
+
+### Setting up the launchd job to run daily
 
 Customize the included launchd plist file, adjusting:
-- path to the `bear_backlinks.py` script
-- working directory path
-- your Bear app API token
+
+- Path to the `bear_backlinks.py` script.
+- Working directory path.
+- Your Bear app API token, from Bear's Help menu.
+- *For Catalina and Big Sur:* prefix the script with `/usr/local/bin/fdautil exec `. This requires [LaunchControl.app](https://www.soma-zone.com/LaunchControl/); read through the Troubleshooting section for details.
 
 Then:
 ```
@@ -73,17 +71,15 @@ To start the job (ie. run the program), which you'll need to do at least once to
 launchctl start com.dzombak.bear-backlinks
 ```
 
-Editing & debugging this job is all easier with the excellent [LaunchControl application](https://www.soma-zone.com/LaunchControl/).
+ℹ️ Editing & debugging this job is much easier with the excellent [LaunchControl application](https://www.soma-zone.com/LaunchControl/).
 
-### Accessibility permissions
+Unfortunately, I have not figured out how to give the `bear_backlinks.py` Python script full disk access directly, to allow running it via launchd. So, **running with launchd on Big Sur or Catalina requires [LaunchControl.app](https://www.soma-zone.com/LaunchControl), which comes with a helper program called [`fdautil`](https://www.soma-zone.com/LaunchControl/FAQ.html)**. Read through Troubleshooting, below, for discussion.
 
-Drag the `bear_backlinks.py` file from Finder into the Accessibility section in the Security & Privacy preference pane.
-
-## Config
+## Configuration
 
 One configuration element is required, the Bear API token for Bear.app on the Mac you're running this program on. Get it from Bear's Help menu > API Token > Copy Token.
 
-Supply it either in the env variable `CDZ_BEAR_API_TOKEN` or in a file `.bear-api-token` in the same directory as `bear_backlinks.py`.
+Supply it either in the environment variable `CDZ_BEAR_API_TOKEN` or in a file `.bear-api-token` in the same directory as `bear_backlinks.py`.
 
 To customize the backup directory, supply the environment variable `CDZ_BEAR_BACKUPS_DIR`.
 
@@ -94,9 +90,13 @@ To customize the backup directory, supply the environment variable `CDZ_BEAR_BAC
 
 ## Troubleshooting
 
-**Verbose logging:** enable by setting env var `CDZ_BEAR_VERBOSE` to `True`.
+**launchd job returns 127:** `bear_backlinks.py` cannot be run. This probably is because `#!/usr/bin/env python3` is not finding a Python 3 binary. Adjust PATH for the launchd job to include `python3`.
 
-**If xcall hangs** returning x-callback-url values, it may be because you've (re)moved an instance of the xcall application somewhere on your filesystem. Fix this by opening the instance in this repo's `lib` folder, via Finder.
+**Verbose logging:** enable by setting the environment variable `CDZ_BEAR_VERBOSE` to `True`. This is a good first step in debugging any issues.
+
+**If `xcall` hangs** returning `x-callback-url` values, it may be because you've (re)moved an instance of the xcall application somewhere else on your filesystem. Fix this by opening the instance in this repo's `lib` folder, via Finder.
+
+*Alternatively, if the program hangs waiting on `xcall`:* I experienced `xcall` hanging when running [commit `95aa09d8`](https://github.com/cdzombak/bear-backlinks/commit/95aa09d8ac05aa64edd8421193aa32631a78bcee) of bear-backlinks on a new Apple Silicon M1 Mac, running Big Sur. I [rebuilt xcall](https://github.com/cdzombak/xcall) as a universal binary, which is now included in this repo. If this situation applies to you: try updating your checkout of this repository, opening `lib/xcall.app` via Finder, and running `bear_backlinks.py` again.
 
 **Automation permission (as of macOS Mojave):** on first run, you'll see something like this in the output:
 
@@ -104,11 +104,25 @@ To customize the backup directory, supply the environment variable `CDZ_BEAR_BAC
 2020-12-01 08:40:37,901 DEBUG:updating content for note DEADBEEF-64
 80:112: execution error: System Events got an error: osascript is not allowed to send keystrokes. (1002)
 2020-12-01 08:40:40,496 INFO:completed successfully; updated 2 notes.
-``` 
+```
 
-This should show up alongside a GUI dialog asking if you want to allow "bear_backlinks.py" to control System Events (or, if you're running from a terminal, it'll ask if your terminal app should be allowed to do so). Approve this request & re-run the program.
+This should show up alongside a GUI dialog asking if you want to allow "bear_backlinks.py" to control System Events (or, if you're running from a terminal, it'll ask if your terminal app should be allowed to do so). Approve this request & re-run the program. (You can also manually drag-and-drop `bear_backlinks.py` into the Accessibility permissions list in System Preferences > Security & Privacy.)
 
-**launchd job returns 127:** `bear_backlinks.py` cannot be run. This probably is because `#!/usr/bin/env python3` is not finding a Python 3 binary. Adjust PATH for the launchd job to include `python3`. 
+**Crash when trying to write note backup (on macOS Catalina/Big Sur):** if you get something like this in your standard error output:
+
+```
+  File "/Users/cdzombak/code/bear-backlinks/bear_backlinks.py", line 97, in <module>
+    main()
+  File "/Users/cdzombak/code/bear-backlinks/bear_backlinks.py", line 76, in main
+    os.mkdir(backup_dir)
+PermissionError: [Errno 1] Operation not permitted: '/Volumes/curie-ext/Backup/bear-backlinks/2021-05-13T15-55-11'
+```
+
+The script needs to be run with Full Disk Access permission. If running the script via Terminal.app or iTerm.app, adding the terminal app to the Full Disk Access permissions list in System Preferences > Security & Privacy should be sufficient.
+
+Unfortunately, I have not figured out how to give the `bear_backlinks.py` Python script full disk access directly, to allow running it via launchd. So, **running with launchd on Big Sur or Catalina requires [LaunchControl.app](https://www.soma-zone.com/LaunchControl), which comes with a helper program called [`fdautil`](https://www.soma-zone.com/LaunchControl/FAQ.html)**.
+
+Install LaunchControl, open the `com.dzombak.bear-backlinks` job, and modify the "Program to run" to `/usr/local/bin/fdautil exec /Users/me/path/to/bear-backlinks/bear_backlinks.py` (changing the path as needed). Finally, you'll need to install fdautil from LaunchControl's Preferences > Utilities window.
 
 ## About
 
