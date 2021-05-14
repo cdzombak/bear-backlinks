@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>BuildMachineOSBuild</key>
-	<string>16E195</string>
+	<string>20E241</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleExecutable</key>
@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.0.2</string>
 	<key>CFBundleSupportedPlatforms</key>
 	<array>
 		<string>MacOSX</string>
@@ -38,21 +38,23 @@
 	<key>DTCompiler</key>
 	<string>com.apple.compilers.llvm.clang.1_0</string>
 	<key>DTPlatformBuild</key>
-	<string>8E162</string>
+	<string>12E262</string>
+	<key>DTPlatformName</key>
+	<string>macosx</string>
 	<key>DTPlatformVersion</key>
-	<string>GM</string>
+	<string>11.3</string>
 	<key>DTSDKBuild</key>
-	<string>16E185</string>
+	<string>20E214</string>
 	<key>DTSDKName</key>
-	<string>macosx10.12</string>
+	<string>macosx11.3</string>
 	<key>DTXcode</key>
-	<string>0830</string>
+	<string>1250</string>
 	<key>DTXcodeBuild</key>
-	<string>8E162</string>
+	<string>12E262</string>
 	<key>LSBackgroundOnly</key>
 	<true/>
 	<key>LSMinimumSystemVersion</key>
-	<string>10.8</string>
+	<string>10.10</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2017 Martin Finke. All rights reserved.</string>
 	<key>NSMainStoryboardFile</key>
