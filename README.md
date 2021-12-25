@@ -43,10 +43,6 @@ Tested on **macOS Mojave and Big Sur, on Intel and Apple Silicon**.
 
 `git clone https://github.com/cdzombak/bear-backlinks.git`. You will run the program from the checked-out repo.
 
-### Accessibility permissions
-
-Drag the `bear_backlinks.py` file from Finder into the Accessibility section in the Security & Privacy preference pane.
-
 ### Full Disk Access permissions
 
 Under Catalina or Big Sur, the script needs to be run with Full Disk Access permission. If running the script via Terminal.app or iTerm.app, adding the terminal app to the Full Disk Access permissions list in System Preferences > Security & Privacy should be sufficient.
@@ -97,16 +93,6 @@ To customize the backup directory, supply the environment variable `CDZ_BEAR_BAC
 **If `xcall` hangs** returning `x-callback-url` values, it may be because you've (re)moved an instance of the xcall application somewhere else on your filesystem. Fix this by opening the instance in this repo's `lib` folder, via Finder.
 
 *Alternatively, if the program hangs waiting on `xcall`:* I experienced `xcall` hanging when running [commit `95aa09d8`](https://github.com/cdzombak/bear-backlinks/commit/95aa09d8ac05aa64edd8421193aa32631a78bcee) of bear-backlinks on a new Apple Silicon M1 Mac, running Big Sur. I [rebuilt xcall](https://github.com/cdzombak/xcall) as a universal binary, which is now included in this repo. If this situation applies to you: try updating your checkout of this repository, opening `lib/xcall.app` via Finder, and running `bear_backlinks.py` again.
-
-**Automation permission (as of macOS Mojave):** on first run, you'll see something like this in the output:
-
-```
-2020-12-01 08:40:37,901 DEBUG:updating content for note DEADBEEF-64
-80:112: execution error: System Events got an error: osascript is not allowed to send keystrokes. (1002)
-2020-12-01 08:40:40,496 INFO:completed successfully; updated 2 notes.
-```
-
-This should show up alongside a GUI dialog asking if you want to allow "bear_backlinks.py" to control System Events (or, if you're running from a terminal, it'll ask if your terminal app should be allowed to do so). Approve this request & re-run the program. (You can also manually drag-and-drop `bear_backlinks.py` into the Accessibility permissions list in System Preferences > Security & Privacy.)
 
 **Crash when trying to write note backup (on macOS Catalina/Big Sur):** if you get something like this in your standard error output:
 

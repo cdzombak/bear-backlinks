@@ -9,7 +9,6 @@ import sys
 import xcall
 
 from config import be_verbose, get_backups_path
-from mac import copy_to_clipboard
 
 
 def main():
@@ -82,12 +81,8 @@ def main():
 
     # update each note that needs updating, in Bear:
     for note, new_content in new_note_content.items():
-        bear.open_note_for_edit(note.id)
         logger.debug(f'updating content for note {note.id}')
-        copy_to_clipboard(new_content)
-        time.sleep(0.5)
-        os.popen("""osascript -e 'tell application "Bear" to activate' -e 'delay 1' -e 'tell application "System Events" to keystroke "a" using command down' -e 'delay 0.5' -e 'tell application "System Events" to keystroke "v" using command down'""").read()
-        time.sleep(0.5)
+        bear.replace_note_contents(note.id, new_content)
 
     logger.info(f'completed successfully; updated {len(new_note_content)} notes.')
     os.popen(f'terminal-notifier -message "✅ Updated Bear backlinks for {len(new_note_content)} notes." -title "Bear Backlinks" -sender net.shinyfrog.bear').read()
