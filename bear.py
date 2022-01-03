@@ -166,3 +166,13 @@ def open_note_for_edit(note_id: str):
         'open_note': 'yes',
         'edit': 'yes',
     })
+
+
+def replace_note_contents(note_id: str, new_contents: str):
+    _ = xcall('bear', 'add-text', {
+        'id': note_id,
+        'mode': 'replace_all',
+        'text': new_contents,
+        'open_note': 'no',
+        'show_window': 'no',
+    })
