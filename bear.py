@@ -159,15 +159,6 @@ def get_note(note_id: str) -> Note:
     }))
 
 
-def open_note_for_edit(note_id: str):
-    _ = xcall('bear', 'open-note', {
-        'id': note_id,
-        'show_window': 'yes',
-        'open_note': 'yes',
-        'edit': 'yes',
-    })
-
-
 def replace_note_contents(note_id: str, new_contents: str):
     _ = xcall('bear', 'add-text', {
         'id': note_id,
