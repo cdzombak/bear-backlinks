@@ -1,3 +1,7 @@
+⚠️ **Unmaintained:** This repo is no longer maintained. [Bear 2 has added a form of backlinks support](https://blog.bear.app/2023/07/bear-2-is-here/), and while it's not _quite_ as usable as I would like, I am no longer running this tool on my Bear notes.
+
+---
+
 # bear-backlinks
 
 Automated backlinks for [the Bear app](https://bear.app), in case you'd like those for a Zettelkasten-style notes library.
